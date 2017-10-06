@@ -8,6 +8,7 @@ import { Configuration as DevServerConfig } from 'webpack-dev-server';
 const devServerConfigObj = {
   contentBase: path.join(__dirname),
   hot: true,
+  watchContentBase: true,
 };
 
 /** @type{webpack.Configuration} */
@@ -46,7 +47,7 @@ const configObj = {
     }),
     new webpack.HotModuleReplacementPlugin(),
   ],
-  watch: false,
+  watch: true,
 };
 
 export default configObj;
