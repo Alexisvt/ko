@@ -28,18 +28,13 @@ const configObj = {
           loader: 'babel-loader',
         },
       },
-      {
-        test: /\.(html)$/,
-        use: {
-          loader: 'html-loader',
-        },
-      },
     ],
   },
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, 'index.html'),
+      template: path.join(__dirname, 'index.ejs'),
+      title: 'KO - SPA Sample',
       options: {
         attrs: false,
       },
@@ -47,6 +42,9 @@ const configObj = {
     new webpack.HotModuleReplacementPlugin(),
   ],
   watch: true,
+  externals: {
+    jquery: 'jQuery',
+  },
 };
 
 export default configObj;

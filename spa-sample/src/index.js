@@ -1,20 +1,37 @@
+import * as $ from 'jquery';
 import ko from 'knockout';
 
-
-// This is a simple *viewmodel* - JavaScript that defines the data and behavior of your UI
-class AppViewModel {
+class WebmailViewModel {
   constructor() {
-    this.firstName = ko.observable('Bert');
-    this.lastName = ko.observable('Bertington');
-    this.fullName = ko.computed(() => `${this.firstName()} ${this.lastName()}`);
+    this.folders = ['Inbox', 'Archive', 'Sent', 'Spam'];
+
+    //#region observables properties
+    this.choosenFolderId = ko.observable();
+    this.choosenFolderData = ko.observable();
+    //#endregion
+
+    //#region hard bindings functions
+    this.goToFolder = this.goToFolder.bind(this);
+    //#endregion
+
+    // selecting the first menu option to display emails
+    this.goToFolder('Inbox');
   }
 
-  capitalizeLastName() {
-    /** @type{string} */
-    let currentVal = this.lastName();
-    this.lastName(currentVal.toUpperCase());
+  /**
+   * Changes the active menu
+   * @param {string} folder 
+   */
+  goToFolder(folder) {
+    this.choosenFolderId(folder);
+
+    $.get(
+      'http://localhost:2415/mail',
+      { folder: folder },
+      this.choosenFolderData
+    );
   }
 }
 
 // Activates knockout.js
-ko.applyBindings(new AppViewModel(), document.getElementById('root'));
+ko.applyBindings(new WebmailViewModel(), document.getElementById('root'));
