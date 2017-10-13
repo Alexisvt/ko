@@ -1,4 +1,5 @@
 import CleanWebpackPlugin from 'clean-webpack-plugin';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
 import webpack from 'webpack';
@@ -28,10 +29,19 @@ const configObj = {
           loader: 'babel-loader',
         },
       },
+      {
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader',
+        }),
+        exclude: /(node_modules)/,
+        test: /\.css$/,
+      },
     ],
   },
   plugins: [
     new CleanWebpackPlugin(['dist']),
+    new ExtractTextPlugin('styles.css'),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'index.ejs'),
       title: 'KO - SPA Sample',
@@ -44,6 +54,9 @@ const configObj = {
   watch: true,
   externals: {
     jquery: 'jQuery',
+  },
+  resolve: {
+    extensions: ['.js', '.json', '.css'],
   },
 };
 
